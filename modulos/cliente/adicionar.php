@@ -1,6 +1,14 @@
-<?php include('classes/Cliente.class.php');
+<?php
+if(isset($_POST['botao']) && $_POST['botao'] == "Salvar"){
+    include("classes/Cliente.class.php");
+    include("classes/DB.class.php");
 
+    $add = new Clinte();
+    $add->setNome($_POST['nome']);
+    $add->setEmail($_POST['email']);
+    $add->adicionar();   
 
+}
 ?>
 
 
@@ -11,20 +19,3 @@ Nome do Cliente: <input type='text' name='nome'> <br/>
 Email do Cliente: <input type='text' name='email'><br/>
 <input type='submit' name='botao' value="Salvar">
 </form>
-
-<?php
-
-if(isset($_POST['botao']) && $_POST['botao'] == "Salvar"){
-
-$cliente = new Cliente();    
-$cliente->setNome($_POST['nome']);
-$cliente->setEmail($_POST['email']);
-
-echo "<br/>O nome do cliente digitado foi: ".$cliente->getNome();
-echo "<br/>O Email do cliente digitado foi: ".$cliente->getEmail();
-
-}
-    
-
-
-?>

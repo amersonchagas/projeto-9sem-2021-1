@@ -217,18 +217,18 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
   
-  <?php               
-        if(isset($_GET["modulo"])){ $modulo = $_GET["modulo"];} else { $modulo = "dashboard";}
-        if(isset($_GET["acao"])){ $acao= $_GET["acao"];} else { $acao= "ver";}
-        
-        if($modulo){
-            if(file_exists("modulos/".$modulo."/".$acao.".php")){ 
-                include("modulos/".$modulo."/".$acao.".php");	
-            }else{
-                echo "A pagina nao existe";
-            }
-        }   
-    ?>
+<?php               
+    if(isset($_GET["modulo"])){ $modulo = $_GET["modulo"];} else { $modulo = "dashboard";}
+    if(isset($_GET["acao"])){ $acao= $_GET["acao"];} else { $acao= "ver";}
+    
+    if($modulo){
+        if(file_exists("modulos/".$modulo."/".$acao.".php")){ 
+            include("modulos/".$modulo."/".$acao.".php");	
+        }else{
+            echo "A pagina nao existe";
+        }
+    }   
+?>
     
     </div>
   <!-- /.content-wrapper -->

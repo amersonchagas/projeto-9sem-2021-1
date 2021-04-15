@@ -4,18 +4,13 @@ if(isset($_POST['botao']) && $_POST['botao'] == "Salvar"){
     include("classes/DB.class.php");
 
     $produto = new Produto();
-
     $produto->setDescricao($_POST['descricao']);
     $produto->setPreco($_POST['preco']);
     $produto->setQuantidade($_POST['quantidade']);
-    $produto->adicionar();
-
-    
+    $produto->adicionar();   
 
 }
 ?>
-
-
 
 <h1>ADICIONAR Produto</h1>
 
@@ -25,3 +20,4 @@ Preço do Produto: <input type='text' name='preco'><br/>
 Quantidade do Produto: <input type='text' name='quantidade'><br/>
 <input type='submit' name='botao' value="Salvar">
 </form>
+

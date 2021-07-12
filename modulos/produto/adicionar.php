@@ -2,17 +2,17 @@
 if(isset($_POST['botao']) && $_POST['botao'] == "Salvar"){
     include("classes/Produto.class.php");
     include("classes/DB.class.php");
-
-    $produto = new Produto();
-    $produto->setDescricao($_POST['descricao']);
-    $produto->setPreco($_POST['preco']);
-    $produto->setQuantidade($_POST['quantidade']);
-    $produto->adicionar();   
+    
+    $add = new Produto();
+    $add->setDescricao($_POST['descricao']);
+    $add->setPreco($_POST['preco']);
+    $add->setQuantidade($_POST['quantidade']);
+    $add->adicionar();   
 
 }
 ?>
 
-<h1>ADICIONAR Produto</h1>
+<h1>Adicionar Produto</h1>
 
 <form method="post" action="">
 Descrição do Produto: <input type='text' name='descricao'> <br/>

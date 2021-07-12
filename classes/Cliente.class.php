@@ -41,21 +41,28 @@
 
         public static function listar(){
             $sql = "SELECT * FROM cliente";
-            $stmt = DB::conexao()->prepare($sql);
-            $stmt->execute();       
-            $registros = $stmt->fetchAll();            
-            if($registros){
-                $itens = array();
-                foreach($registros as $registro){                
-                    $temporario = new Cliente();
-		            $temporario->setId($registro['id']);
-                    $temporario->setNome($registro['nome']);  
-		            $temporario->setEmail($registro['email']);                    
-                    $itens[] = $temporario;
-                }    
-	            return $itens;
+
+            try{
+                $stmt = DB::conexao()->prepare($sql);
+                $stmt->execute();       
+                $registros = $stmt->fetchAll();            
+                if($registros){
+                    $itens = array();
+                    foreach($registros as $registro){                
+                        $temporario = new Cliente();
+                        $temporario->setId($registro['id']);
+                        $temporario->setNome($registro['nome']);  
+                        $temporario->setEmail($registro['email']);                    
+                        $itens[] = $temporario;
+                    }    
+                    return $itens;
+                }
+                return false;
+
+            }catch(PDOException $e){
+                echo "Erro no Método Listar: ".$e->getMessage();
             }
-            return false;
+
         }
 
         public function adicionar(){
@@ -68,7 +75,38 @@
                 $stmt->bindParam(':email', $this->email);
                 $stmt->execute();
             }catch(PDOException $e){
-                echo "Erro: ".$e->getMessage();
+                echo "Erro no Método Adicionar: ".$e->getMessage();
+            }
+        }
+
+        public function atualizar(){
+            if($this->id){
+                $sql = "UPDATE cliente SET
+                            nome = :nome,
+                            email = :email
+                        WHERE id = :id";
+                try{
+                    $stmt = DB::conexao()->prepare($sql);
+                    $stmt->bindParam(':nome', $this->nome);
+                    $stmt->bindParam(':email', $this->email);
+                    $stmt->bindParam(':id', $this->id);
+                    $stmt->execute();       
+                }catch(PDOException $e){
+                    echo "Erro no Método Atualizar: ".$e->getMessage();
+                }      
+            }    
+        }
+
+        public function excluir(){
+            if($this->id){
+                $sql = "DELETE FROM cliente where id = :id";
+                try{
+                    $stmt = DB::conexao()->prepare($sql);
+                    $stmt->bindParam(':id', $this->id);
+                    $stmt->execute();
+                }catch(PDOException $e){
+                    echo "Erro no Método Excluir: ".$e->getMessage();
+                }
             }
         }
 

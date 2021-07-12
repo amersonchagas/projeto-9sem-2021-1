@@ -17,7 +17,7 @@
                     $this->setId($registro['id_produto']);
                     $this->setDescricao($registro['descricao']);
                     $this->setPreco($registro['preco']);
-                    $this->setQuantidade($registro['quantidade']);
+                    // $this->setQuantidade($registro['quantidade']);
                 }
             }
         }
@@ -56,25 +56,29 @@
 
         public static function listar(){
             $sql = "SELECT * FROM produto";
-            $stmt = DB::conexao()->prepare($sql);
-            $stmt->execute();       
-            $registros = $stmt->fetchAll();
-            
-            if($registros){
-                $itens = array();
-                foreach($registros as $registro){
+
+            try{
+                $stmt = DB::conexao()->prepare($sql);
+                $stmt->execute();       
+                $registros = $stmt->fetchAll();
                 
-                    $temporario = new Produto();
-		            $temporario->setId($registro['id']);
-                    $temporario->setDescricao($registro['descricao']);  
-		            $temporario->setPreco($registro['preco']);            
-		            $temporario->setQuantidade($registro['quantidade']);               
-                		
-                    $itens[] = $temporario;
-                }    
-	            return $itens;
+                if($registros){
+                    $itens = array();
+                    foreach($registros as $registro){                    
+                        $temporario = new Produto();
+                        $temporario->setId($registro['id_produto']);
+                        $temporario->setDescricao($registro['descricao']);  
+                        $temporario->setPreco($registro['preco']);            
+                        // $temporario->setQuantidade($registro['quantidade']); 
+                        $itens[] = $temporario;
+                    }    
+                    return $itens;
+                }
+                return false;
+            
+            }catch(PDOException $e){
+                echo "Erro no Método Listar: ".$e->getMessage();
             }
-            return false;
         }
 
         public function adicionar(){
@@ -88,7 +92,40 @@
                 $stmt->bindParam(':quantidade', $this->quantidade);
                 $stmt->execute();
             }catch(PDOException $e){
-                echo "Erro: ".$e->getMessage();
+                echo "Erro no Método Adicionar: ".$e->getMessage();
+            }
+        }
+
+        public function atualizar(){
+            if($this->id){
+                $sql = "UPDATE produto SET
+                            descricao = :descricao,
+                            preco = :preco,
+                            quantidade = :quantidade
+                        WHERE id = :id";
+                try{
+                    $stmt = DB::conexao()->prepare($sql);
+                    $stmt->bindParam(':descricao', $this->descricao);
+                    $stmt->bindParam(':preco', $this->preco);
+                    $stmt->bindParam(':quantidade', $this->quantidade);
+                    $stmt->bindParam(':id', $this->id);
+                    $stmt->execute();       
+                }catch(PDOException $e){
+                    echo "Erro no Método Atualizar: ".$e->getMessage();
+                }      
+            }    
+        }
+
+        public function excluir(){
+            if($this->id){
+                $sql = "DELETE FROM produto where id = :id";
+                try{
+                    $stmt = DB::conexao()->prepare($sql);
+                    $stmt->bindParam(':id', $this->id);
+                    $stmt->execute();
+                }catch(PDOException $e){
+                    echo "Erro no Método Excluir: ".$e->getMessage();
+                }
             }
         }
 

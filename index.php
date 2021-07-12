@@ -1,3 +1,6 @@
+<?php
+  define("URL", "http://localhost/projeto/");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
